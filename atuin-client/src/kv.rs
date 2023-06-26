@@ -98,10 +98,7 @@ impl KvStore {
 
         let bytes = record.serialize()?;
 
-        let parent = store
-            .last(host_id.as_str(), KV_TAG)
-            .await?
-            .map(|entry| entry.id);
+        let parent = store.last(host_id, KV_TAG).await?.map(|entry| entry.id);
 
         let record = atuin_common::record::Record::builder()
             .host(host_id)
@@ -132,7 +129,7 @@ impl KvStore {
 
         // iterate records to find the value we want
         // start at the end, so we get the most recent version
-        let Some(mut record) = store.last(host_id.as_str(), KV_TAG).await? else {
+        let Some(mut record) = store.last(host_id, KV_TAG).await? else {
             return Ok(None);
         };
 
@@ -143,7 +140,7 @@ impl KvStore {
             }
 
             if let Some(parent) = record.parent {
-                record = store.get(parent.as_str()).await?;
+                record = store.get(parent).await?;
             } else {
                 break;
             }
