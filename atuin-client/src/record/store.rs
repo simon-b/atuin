@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use eyre::Result;
 
-use atuin_common::record::Record;
+use atuin_common::record::{Record, RecordIndex};
 use uuid::Uuid;
 
 /// A record store stores records
@@ -28,4 +28,6 @@ pub trait Store {
     async fn first(&self, host: Uuid, tag: &str) -> Result<Option<Record>>;
     /// Get the last record for a given host and tag
     async fn last(&self, host: Uuid, tag: &str) -> Result<Option<Record>>;
+
+    async fn tail_records(&self) -> Result<Vec<(Uuid, String, Uuid)>>;
 }
