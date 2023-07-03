@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
+pub type Diff = Vec<(Uuid, String, Uuid)>;
+
 /// A single record stored inside of our local database
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, TypedBuilder)]
 pub struct Record {
@@ -103,7 +105,7 @@ impl RecordIndex {
     /// other machine has a different tail, it will be the differing tail. This is useful to
     /// check if the other index is ahead of us, or behind.
     /// If the other index does not have the (host, tag) pair, then the other value will be None.
-    pub fn diff(&self, other: &Self) -> Vec<(Uuid, String, Uuid)> {
+    pub fn diff(&self, other: &Self) -> Diff {
         let mut ret = Vec::new();
 
         // First, we check if other has everything that self has
