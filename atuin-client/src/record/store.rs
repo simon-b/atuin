@@ -25,9 +25,9 @@ pub trait Store {
     async fn next(&self, record: &Record) -> Result<Option<Record>>;
 
     /// Get the first record for a given host and tag
-    async fn first(&self, host: Uuid, tag: &str) -> Result<Option<Record>>;
+    async fn head(&self, host: Uuid, tag: &str) -> Result<Option<Record>>;
     /// Get the last record for a given host and tag
-    async fn last(&self, host: Uuid, tag: &str) -> Result<Option<Record>>;
+    async fn tail(&self, host: Uuid, tag: &str) -> Result<Option<Record>>;
 
     async fn tail_records(&self) -> Result<Vec<(Uuid, String, Uuid)>>;
 }
